@@ -1,27 +1,8 @@
 const fetch = require('node-fetch');
 
-export const checkPemilu = async () => {
+const checkPemilu = async () => {
   return new Promise((resolve, reject) => {
-    fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json', {
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Accept-Language': 'id,en-US;q=0.9,en;q=0.8,fr;q=0.7',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-        Origin: 'https://pemilu2024.kpu.go.id',
-        Pragma: 'no-cache',
-        Referer: 'https://pemilu2024.kpu.go.id/',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-site',
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'sec-ch-ua':
-          '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-      },
-    })
+    fetch('https://sirekap-kpu.heirro.dev/')
       .then((res) => {
         resolve(res.json());
       })
@@ -29,4 +10,25 @@ export const checkPemilu = async () => {
         reject(err);
       });
   });
+};
+
+// const main = async () => {
+//   checkPemilu().then((res) => {
+//     const { data } = res;
+//     const paslon = `Sirekap - ${data?.timestamp}\n
+
+// 1. ${data?.paslon['1'].name} - ${data?.paslon['1'].percentage}%
+// 2. ${data?.paslon['2'].name} - ${data?.paslon['2'].percentage}%
+// 3. ${data?.paslon['3'].name} - ${data?.paslon['3'].percentage}%
+
+// ${data?.progress?.description}
+//     `;
+//     console.log(paslon);
+//   });
+// };
+
+// main();
+
+module.exports = {
+  checkPemilu,
 };
