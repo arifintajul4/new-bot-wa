@@ -1,6 +1,7 @@
 // Supports ES6
 // import { create, Whatsapp } from 'venom-bot';
 const venom = require('venom-bot');
+const { checkPemilu } = require('./service/pemilu');
 
 venom
   .create({
@@ -14,19 +15,26 @@ venom
 function start(client) {
   client.onMessage((message) => {
     if (message.body === '.bot') {
-      client
-        .sendText(message.from, 'Welcome Venom 🕷')
-        .then((result) => {
-          console.log('Result: ', result); //return object success
-        })
-        .catch((erro) => {
-          console.error('Error when sending: ', erro); //return object error
-        });
+      client.sendText(message.from, 'Welcome Venom 🕷');
     }
-    if (message.body === '.pemilu') {
-      checkPemilu().then((res) => {
-        client.sendText(message.from, JSON.stringify(res, null, 2));
-      });
+    if (message.body === '.sirekap') {
+      checkPemilu()
+        .then((res) => {
+          const { data } = res;
+          const paslon = `Sirekap - ${data?.timestamp}\n
+1. ${data?.paslon['1'].percentage}% - ${data?.paslon['1'].name} 
+
+2. ${data?.paslon['2'].percentage}% - ${data?.paslon['2'].name}
+
+3. ${data?.paslon['3'].percentage}% - ${data?.paslon['3'].name}
+
+${data?.progress?.description} - ${data?.progress?.percentage}%
+        `;
+          client.sendText(message.from, paslon);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   });
 }
